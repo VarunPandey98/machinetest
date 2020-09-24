@@ -52,6 +52,44 @@ router.get('/testscore/list',async (req,res)=>{
 });
 
 
+//Get Highest Mark
+router.get('/testscore/highest', (req,res)=>{
+    findQuery = Testscore.find().sort({testscore_score : -1}).limit(1);
+   
+    findQuery.exec(function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(findQuery);
+            res.json(data);
+        }
+    }) 
+});
+
+
+//Get Average Mark
+router.get('/testscore/average', (req,res)=>{
+    findQuery = Testscore.aggregate(
+    [{
+        $group:
+            {
+            _id: "$candidate_uuid",
+            average_score: { $avg: "$testscore_score" }
+            }
+        }]
+    )
+   
+    findQuery.exec(function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(findQuery);
+            res.json(data);
+        }
+    }) 
+});
+
+
 //Update student Record
 router.post('/testscore/update', (req,res)=>{
 
@@ -79,6 +117,5 @@ router.get('/testscore/:postId', (req,res)=>{
     }) 
     
 });
-
 
 module.exports=router;

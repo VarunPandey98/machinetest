@@ -14,7 +14,7 @@ const TestscoreSchema = mongoose.Schema({
         required:true
     },
     testscore_score:{
-        type: String
+        type: Number
     },
     testscore_created_date:{
         type: Date,
